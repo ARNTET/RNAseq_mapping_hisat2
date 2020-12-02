@@ -40,3 +40,27 @@ vcftools \
 --recode \
 --recode-INFO-all \
 --out SRR085107/SRR085107.SNPs.txt
+
+################################################################################
+mkdir SRR080725
+
+##SRR080725##
+hisat2 \
+-q \
+-x Lsat_mtDNA/index \
+--mp 2.0 \
+-U SRR080725/SRR080725.fastq.gz  \
+-S SRR080725/SRR080725.mapped_reads.sam
+samtools view -b \
+SRR080725/SRR080725.mapped_reads.sam \
+> SRR080725/SRR080725.mapped.bam
+
+freebayes -f Lsat_mtDNA/Lsat_mtDNA.fasta \
+SRR080725/SRR080725.mapped.bam > SRR080725/SRR080725.var.vcf
+
+vcftools \
+--vcf SRR080725/SRR080725.var.vcf \
+--remove-indels \
+--recode \
+--recode-INFO-all \
+--out SRR080725/SRR080725.SNPs.txt
